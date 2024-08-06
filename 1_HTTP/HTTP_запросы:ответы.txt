@@ -1,0 +1,80 @@
+Запрос 1
+ncat -C httpbin.org 80
+GET /get HTTP/1.1
+Host: httpbin.org
+Ответ 1
+HTTP/1.1 200 OK
+Date: Tue, 06 Aug 2024 15:46:27 GMT
+Content-Type: application/json
+Content-Length: 198
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {},
+  "headers": {
+    "Host": "httpbin.org",
+    "X-Amzn-Trace-Id": "Root=1-66b24552-170535d932d09ad741f5f235"
+  },
+  "origin": "31.28.233.126",
+  "url": "http://httpbin.org/get"
+}
+-----------------------------------------------------------------------------------------
+Запрос 2
+ncat -C httpbin.org 80
+GET /get?name="Tim" HTTP/1.1
+Host: httpbin.org
+Ответ 2
+HTTP/1.1 200 OK
+Date: Tue, 06 Aug 2024 16:08:30 GMT
+Content-Type: application/json
+Content-Length: 236
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {
+    "name": "\"Tim\""
+  },
+  "headers": {
+    "Host": "httpbin.org",
+    "X-Amzn-Trace-Id": "Root=1-66b24a7d-5320897469417164638c50a3"
+  },
+  "origin": "31.28.233.126",
+  "url": "http://httpbin.org/get?name=\"Tim\""
+}
+Запрос 3
+ncat -C httpbin.org 80
+POST /post HTTP/1.1
+Host: httpbin.org
+Content-Length: 10
+
+name=Tim
+Ответ 3
+HTTP/1.1 200 OK
+Date: Tue, 06 Aug 2024 16:33:50 GMT
+Content-Type: application/json
+Content-Length: 303
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {},
+  "data": "name=Tim\r\n",
+  "files": {},
+  "form": {},
+  "headers": {
+    "Content-Length": "10",
+    "Host": "httpbin.org",
+    "X-Amzn-Trace-Id": "Root=1-66b25067-3d6eae7475bf7df80c304190"
+  },
+  "json": null,
+  "origin": "31.28.233.126",
+  "url": "http://httpbin.org/post"
+}
