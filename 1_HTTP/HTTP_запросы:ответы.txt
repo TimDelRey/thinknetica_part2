@@ -47,6 +47,7 @@ Access-Control-Allow-Credentials: true
   "origin": "31.28.233.126",
   "url": "http://httpbin.org/get?name=\"Tim\""
 }
+----------------------------------------------------------------------------------------
 Запрос 3
 ncat -C httpbin.org 80
 POST /post HTTP/1.1
