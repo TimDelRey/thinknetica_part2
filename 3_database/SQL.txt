@@ -1,0 +1,120 @@
+ЗАДАНИЕ 1
+
+Создание базы данных:
+➜  thinknetica_part2 git:(main) ✗ createdb test_guru;
+➜  thinknetica_part2 git:(main) ✗ psql -d test_guru;
+psql (14.13 (Homebrew))
+Type "help" for help.
+
+Создание таблицы categories:
+test_guru=# CREATE TABLE categories (
+test_guru(# id serial PRIMARY KEY,
+test_guru(# title varchar (50));
+CREATE TABLE
+CREATE TABLE
+
+Создание таблицы tests:
+test_guru=# CREATE  TABLE tests (
+id serial PRIMARY KEY,
+title varchar(50),
+level int,
+categories_id int REFERENCES categories (id)
+);
+CREATE TABLE
+
+Создание таблицы questions:
+CREATE TABLE
+test_guru=# CREATE TABLE questions (
+test_guru(# id serial PRIMARY KEY,
+test_guru(# body varchar(1000),
+test_guru(# tests_id int REFERENCES tests (id)
+test_guru(# );
+CREATE TABLE
+
+ЗАДАНИЕ 2
+
+Создание 3(4) строк в таблице categories:
+test_guru=# INSERT INTO categories(title) VALUES
+('Breakfast'),
+('Drinks'),
+('Main dishes'),
+test_guru-# ('Snacks');
+INSERT 0 4
+
+Создание 5 строк в таблице  tests:
+test_guru=# ALTER TABLE tests
+ALTER COLUMN title TYPE varchar(1000);
+ALTER TABLE
+test_guru=# INSERT INTO tests (title, level, categories_id) VALUES
+('Weekend breakfast', 3, 1),
+('Drinks', 3, 2),
+('Dinner', 3, 3),
+('Food at work', 2, 3),
+('Snacks', 1,3);
+INSERT 0 5
+
+Создание 5 строк в таблице questions:
+test_guru=# INSERT INTO questions(body) VALUES
+test_guru-# ('Можно ли завтракать тортом?'),
+('Бутерброд с паштетом равносильно полезен бутерброду с колбасой и сыром?'),
+('Сколько времени должна кипеть молодая кукуруза?'),
+('Сколько нужно воды, что бы сварить гречку?'),
+('Нужно ли размораживать манты перед готовкой?');
+INSERT 0 5
+
+Выберите все тесты с уровнем 2 и 3:
+test_guru=# SELECT * FROM tests
+WHERE level = 2 OR level = 3;
+ id |  title  | level | categories_id
+----+---------+-------+---------------
+  7 | example |     2 |             1
+  8 | main    |     2 |             3
+  9 | bonus   |     3 |             3
+ 10 | finish  |     3 |             3
+(4 rows)
+
+Выбрать все вопросы для определенного теста
+test_guru=# SELECT * FROM questions
+test_guru-# WHERE tests_id = 11;
+ id |                                  body                                   | tests_id
+----+-------------------------------------------------------------------------+----------
+  1 | Можно ли завтракать тортом?                                             |       11
+  2 | Бутерброд с паштетом равносильно полезен бутерброду с колбасой и сыром? |       11
+(2 rows)
+
+Обновить атрибуты title и level для строки и таблицы tests:
+test_guru=# UPDATE tests
+test_guru-# SET title = 'Braekfast',
+test_guru-# level = 2
+test_guru-# WHERE id = 11;
+UPDATE 1
+
+Удалить все вопросы для конкретного теста:
+test_guru=# DELETE FROM questions
+test_guru-# WHERE tests_id = 15;
+DELETE 1
+
+C помощью JOIN выбрать названия всех тестов и названия их категорий:
+test_guru=# SELECT tests.title, categories.title
+FROM tests JOIN categories
+ON tests.categories_id = categories.id;
+    title     |      title
+--------------+------------------
+ Braekfast    | Meet food
+ Drinks       | Vegan food
+ Snacks       | Unspecified food
+ Food at work | Unspecified food
+ Dinner       | Unspecified food
+(5 rows)
+
+С помощью JOIN выберите содержание всех вопросов (атрибут body) и названия связанных с ними тестов:
+test_guru=# SELECT questions.body, tests.title FROM questions
+JOIN tests
+ON questions.tests_id = tests.id;
+                                  body                                   |   title
+-------------------------------------------------------------------------+-----------
+ Можно ли завтракать тортом?                                             | Braekfast
+ Бутерброд с паштетом равносильно полезен бутерброду с колбасой и сыром? | Braekfast
+ Сколько нужно воды, что бы сварить гречку?                              | Dinner
+ Нужно ли размораживать манты перед готовкой?                            | Dinner
+(4 rows)
